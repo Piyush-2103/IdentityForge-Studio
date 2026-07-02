@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Downloading IDCraft Pro — Arham Studios</title>
+<meta name="description" content="Your IDCraft Pro download is starting automatically.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="N4.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.min.css">
+<style>
+/* ── Download page styles ── */
+.dl-page {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 24px; text-align: center;
+  gap: 0;
+}
+.dl-card {
+  background: var(--white);
+  border-radius: var(--rxl);
+  border: 3px solid rgba(255,255,255,.9);
+  box-shadow: var(--cxl);
+  padding: 56px 48px;
+  max-width: 540px; width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+}
+[data-theme="dark"] .dl-card {
+  background: #1A1612;
+  border-color: rgba(245,239,230,.08);
+}
+
+/* Animated download icon */
+.dl-icon-wrap {
+  width: 80px; height: 80px;
+  background: var(--amber-lt);
+  border: 3px solid var(--amber-md);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--camb);
+  animation: icon-bounce .6s var(--ease) infinite alternate;
+}
+@keyframes icon-bounce {
+  from { transform: translateY(0); box-shadow: var(--camb); }
+  to   { transform: translateY(-6px); box-shadow: 6px 10px 0 rgba(196,82,10,.3); }
+}
+.dl-icon-wrap svg { width: 36px; height: 36px; color: var(--amber); }
+
+/* Status badge */
+.dl-status-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--peach); color: var(--amber);
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: 100px;
+  border: 1.5px solid var(--amber-md);
+  box-shadow: 2px 2px 0 var(--amber-md);
+}
+[data-theme="dark"] .dl-status-badge { background: rgba(232,101,10,.18); }
+.dl-status-dot {
+  width: 7px; height: 7px; background: var(--amber); border-radius: 50%;
+  animation: pulse 1.4s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(.7); }
+}
+
+/* Title */
+.dl-title {
+  font-family: var(--disp);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1; color: var(--ink);
+  margin: 0;
+}
+.dl-sub {
+  font-size: .95rem; line-height: 1.8; color: var(--ink2);
+  font-weight: 500; max-width: 380px; margin: 0;
+}
+
+/* Progress bar */
+.dl-progress-wrap {
+  width: 100%;
+  background: var(--bg2);
+  border-radius: 100px;
+  height: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+.dl-progress-bar {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--amber), #FF9A56);
+  width: 0%;
+  transition: width .4s ease;
+  box-shadow: 0 0 8px rgba(232,101,10,.5);
+}
+.dl-progress-label {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  letter-spacing: .1em; color: var(--amber); text-transform: uppercase;
+}
+
+/* Steps */
+.dl-steps {
+  width: 100%;
+  display: flex; flex-direction: column; gap: 10px;
+  text-align: left;
+}
+.dl-step {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg); border-radius: var(--rmd);
+  border: 2px solid rgba(255,255,255,.9);
+  box-shadow: var(--csm); padding: 12px 16px;
+  font-size: .88rem; font-weight: 600; color: var(--ink2);
+  transition: all .3s ease;
+}
+[data-theme="dark"] .dl-step {
+  background: #0D0B09;
+  border-color: rgba(245,239,230,.06);
+}
+.dl-step.done {
+  border-color: rgba(26,122,74,.3);
+  background: rgba(26,122,74,.06);
+  color: var(--success);
+}
+.dl-step.active {
+  border-color: var(--amber-md);
+  background: var(--amber-lt);
+  color: var(--amber);
+}
+[data-theme="dark"] .dl-step.done { background: rgba(26,122,74,.1); }
+[data-theme="dark"] .dl-step.active { background: rgba(232,101,10,.12); }
+.dl-step-icon {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.7); border: 2px solid currentColor;
+  font-size: 12px; font-weight: 700; font-family: var(--mono);
+}
+.dl-step.done .dl-step-icon::after { content: "✓"; }
+.dl-step.active .dl-step-icon { animation: spin .8s linear infinite; }
+@keyframes spin {
+  from { transform: rotate(0deg); } to { transform: rotate(360deg); }
+}
+.dl-step:not(.done):not(.active) .dl-step-icon::after { content: attr(data-n); }
+
+/* Warning box */
+.dl-warning {
+  width: 100%;
+  background: rgba(251,191,36,.1);
+  border: 2px solid rgba(251,191,36,.4);
+  border-radius: var(--rmd); padding: 16px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  text-align: left;
+}
+.dl-warning svg { width: 20px; height: 20px; color: #D97706; flex-shrink: 0; margin-top: 1px; }
+.dl-warning-text { font-size: .85rem; line-height: 1.75; color: var(--ink2); font-weight: 500; }
+.dl-warning-text strong { color: var(--ink); }
+
+/* Manual link */
+.dl-manual {
+  font-family: var(--mono); font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; color: var(--ink3);
+  text-transform: uppercase;
+}
+.dl-manual a {
+  color: var(--amber); text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Success state */
+.dl-success { display: none; flex-direction: column; align-items: center; gap: 16px; }
+.dl-success-icon { font-size: 4rem; animation: pop .5s var(--ease); }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.dl-success-title { font-family: var(--disp); font-size: 2.2rem; color: var(--ink); margin: 0; }
+.dl-success-sub { font-size: .92rem; color: var(--ink2); font-weight: 500; line-height: 1.8; margin: 0; }
+
+/* Next steps */
+.dl-next {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; margin-top: 8px;
+}
+.dl-next-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background: var(--bg); border: 2px solid rgba(255,255,255,.9);
+  border-radius: var(--rmd); box-shadow: var(--csm);
+  padding: 14px 10px; text-align: center;
+  font-size: .8rem; font-weight: 700; color: var(--ink2);
+  text-decoration: none;
+  transition: transform .18s var(--ease), box-shadow .18s, background .18s;
+}
+[data-theme="dark"] .dl-next-item { background: #0D0B09; border-color: rgba(245,239,230,.06); }
+.dl-next-item:hover { transform: translateY(-3px); box-shadow: var(--cmd); background: var(--amber-lt); color: var(--amber); }
+.dl-next-num {
+  font-family: var(--disp); font-size: 2rem; line-height: 1;
+  color: var(--amber);
+}
+.dl-next-label { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+
+@media (max-width: 560px) {
+  .dl-card { padding: 36px 20px; }
+  .dl-next { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="prog" role="progressbar" aria-label="Page scroll progress"></div>
+
+<header id="nav" role="banner">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <img src="N4.png" alt="IDCraft Pro logo" width="26" height="22" id="nav-logo">
+      <span class="nav-brand-name">IDCraft Pro</span>
+    </div>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html#workflow">Workflow</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#reviews">Reviews</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="transmorph.html" target="_blank" class="nav-free-tools">Free Tools ↗</a>
+    </nav>
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+    <button id="mob-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mob-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="mob-menu" aria-label="Mobile navigation">
+    <a href="index.html" class="ml">Home</a>
+    <a href="index.html#features" class="ml">Features</a>
+    <a href="index.html#pricing" class="ml">Pricing</a>
+    <a href="transmorph.html" target="_blank" class="ml" style="color:var(--amber);">Free Tools ↗</a>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="dl-page">
+    <div class="dl-card" id="dl-card">
+
+      <!-- Downloading state (default) -->
+      <div id="dl-downloading">
+        <div class="dl-icon-wrap" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+        </div>
+
+        <div class="dl-status-badge">
+          <span class="dl-status-dot"></span>
+          <span id="dl-status-text">Preparing download…</span>
+        </div>
+
+        <h1 class="dl-title">IDCraft Pro</h1>
+        <p class="dl-sub">Your download will begin automatically. This may take a few seconds depending on your connection.</p>
+
+        <!-- Progress bar -->
+        <div style="width:100%">
+          <div class="dl-progress-wrap" role="progressbar" aria-label="Download preparation progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="dl-progress-bar" id="dl-bar"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;">
+            <span class="dl-progress-label" id="dl-pct">0%</span>
+            <span class="dl-progress-label">IDCraft-Pro-Setup.exe · ~40 MB</span>
+          </div>
+        </div>
+
+        <!-- Step indicators -->
+        <div class="dl-steps" role="list">
+          <div class="dl-step active" id="step-1" role="listitem">
+            <div class="dl-step-icon" data-n="1"></div>
+            <span>Verifying release &amp; generating download link</span>
+          </div>
+          <div class="dl-step" id="step-2" role="listitem">
+            <div class="dl-step-icon" data-n="2"></div>
+            <span>Sending you a notification</span>
+          </div>
+          <div class="dl-step" id="step-3" role="listitem">
+            <div class="dl-step-icon" data-n="3"></div>
+            <span>Starting download from GitHub Releases</span>
+          </div>
+        </div>
+
+        <!-- SmartScreen warning -->
+        <div class="dl-warning" role="note">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <div class="dl-warning-text">
+            <strong>Windows SmartScreen may appear.</strong> This is normal for unsigned software. Click <strong>"More info" → "Run anyway"</strong> to proceed. IDCraft Pro is safe and 100% offline — it never connects to the internet.
+          </div>
+        </div>
+
+        <p class="dl-manual">
+          Download not starting? <a href="https://github.com/Piyush-2103/IDCraft-Pro/releases/latest/download/IDCraft-Pro-Setup.exe" id="manual-link">Click here to download manually</a>
+        </p>
+      </div>
+
+      <!-- Success state (shown after download triggers) -->
+      <div class="dl-success" id="dl-success">
+        <div class="dl-success-icon" aria-hidden="true">🎉</div>
+        <h2 class="dl-success-title">Download Started!</h2>
+        <p class="dl-success-sub">
+          <strong>IDCraft-Pro-Setup.exe</strong> is downloading.<br>
+          Check your browser's download bar or Downloads folder.
+        </p>
+        <div class="dl-next">
+          <div>
+            <div class="dl-next-num">1</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--ink)">Run Setup</div>
+            <div class="dl-next-label">Open the .exe file</div>
+          </div>
+          <div>
+            <div class="dl-next-num">2</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--ink)">Click "More info"</div>
+            <div class="dl-next-label">Then "Run anyway"</div>
+          </div>
+          <div>
+            <div class="dl-next-num">3</div>
+            <div style="font-size:.85rem;font-weight:700;color:var(--ink)">Start designing</div>
+            <div class="dl-next-label">7-day free trial</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+          <a href="index.html#pricing" class="btn btn-primary" style="min-width:180px;justify-content:center;">View Pricing →</a>
+          <a href="index.html#faq" class="btn btn-ghost" style="min-width:180px;justify-content:center;">Read FAQ</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-row">
+        <img src="N5.png" alt="IDCraft Pro" width="26" height="22">
+        <span class="footer-brand-name">IDCraft Pro</span>
+      </div>
+      <p class="footer-brand-desc">Enterprise bulk ID card generation for Windows.</p>
+    </div>
+    <div><div class="footer-col-title">Product</div><ul class="footer-links"><li><a href="index.html#features">Features</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="transmorph.html" target="_blank">Free File Converter ↗</a></li></ul></div>
+    <div><div class="footer-col-title">Support</div><ul class="footer-links"><li><a href="index.html#contact">Contact</a></li><li><a href="https://github.com/Piyush-2103/IDCraft-Pro" target="_blank">GitHub</a></li></ul></div>
+    <div><div class="footer-col-title">Legal</div><ul class="footer-links"><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Use</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Arham Studios. All rights reserved.</p>
+    <p>Designed &amp; developed by Piyush Kumar Dugar</p>
+  </div>
+</footer>
+
+<script defer src="script.min.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════
+   DOWNLOAD PAGE — Ntfy notification + animated sequence
+════════════════════════════════════════════════════════ */
+(function() {
+
+  // ── CONFIG ───────────────────────────────────────────
+  // Your unique Ntfy topic — change this to something only you know
+  // Subscribe to this topic in the Ntfy app on your phone
+  const NTFY_TOPIC = 'idcraftpro-downloads-piyush2103';
+  const NTFY_URL   = 'https://ntfy.sh/' + NTFY_TOPIC;
+  const DL_URL     = 'https://github.com/Piyush-2103/IDCraft-Pro/releases/latest/download/IDCraft-Pro-Setup.exe';
+  // ─────────────────────────────────────────────────────
+
+  const bar      = document.getElementById('dl-bar');
+  const pct      = document.getElementById('dl-pct');
+  const status   = document.getElementById('dl-status-text');
+  const step1    = document.getElementById('step-1');
+  const step2    = document.getElementById('step-2');
+  const step3    = document.getElementById('step-3');
+  const dlWrap   = document.getElementById('dl-downloading');
+  const success  = document.getElementById('dl-success');
+
+  function setProgress(p) {
+    bar.style.width = p + '%';
+    bar.parentElement.setAttribute('aria-valuenow', p);
+    pct.textContent = p + '%';
+  }
+
+  function stepDone(el) {
+    el.classList.remove('active');
+    el.classList.add('done');
+    el.querySelector('.dl-step-icon').textContent = '✓';
+  }
+  function stepActive(el) {
+    el.classList.add('active');
+  }
+
+  function showSuccess() {
+    dlWrap.style.display = 'none';
+    success.style.display = 'flex';
+  }
+
+  function triggerDownload() {
+    const a = document.createElement('a');
+    a.href = DL_URL;
+    a.download = 'IDCraft-Pro-Setup.exe';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    const platform = ua.includes('Win') ? 'Windows' :
+                     ua.includes('Mac') ? 'macOS' :
+                     ua.includes('Linux') ? 'Linux' :
+                     ua.includes('Android') ? 'Android' :
+                     ua.includes('iPhone') ? 'iPhone' : 'Unknown';
+    const browser = ua.includes('Chrome') ? 'Chrome' :
+                    ua.includes('Firefox') ? 'Firefox' :
+                    ua.includes('Safari') ? 'Safari' :
+                    ua.includes('Edge') ? 'Edge' : 'Unknown';
+    return platform + ' · ' + browser;
+  }
+
+  async function sendNtfy() {
+    const time = new Date().toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata', day:'2-digit', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+    const device = getDeviceInfo();
+    const body = `📥 New Download!\n🕐 ${time} IST\n💻 ${device}\n🌐 Ref: ${document.referrer || 'Direct'}`;
+    try {
+      await fetch(NTFY_URL, {
+        method: 'POST',
+        body: body,
+        headers: {
+          'Title':    '🎉 IDCraft Pro — New Download!',
+          'Priority': 'high',
+          'Tags':     'inbox_tray,rocket'
+        }
+      });
+    } catch(e) {
+      // Silent fail — don't block the download if Ntfy is unreachable
+      console.warn('Ntfy notification failed:', e);
+    }
+  }
+
+  // ── ANIMATED SEQUENCE ─────────────────────────────────
+  async function runSequence() {
+
+    // Step 1: Verifying (0→45%)
+    status.textContent = 'Verifying release…';
+    await animateBar(0, 45, 900);
+
+    stepDone(step1);
+    stepActive(step2);
+    status.textContent = 'Sending notification…';
+    await animateBar(45, 70, 400);
+
+    // Step 2: Send Ntfy notification
+    await sendNtfy();
+    stepDone(step2);
+    await animateBar(70, 85, 300);
+
+    // Step 3: Trigger download
+    stepActive(step3);
+    status.textContent = 'Starting download…';
+    await animateBar(85, 100, 600);
+    triggerDownload();
+    stepDone(step3);
+
+    // Small pause, then show success
+    await delay(700);
+    showSuccess();
+  }
+
+  function animateBar(from, to, duration) {
+    return new Promise(resolve => {
+      const start = performance.now();
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const val = Math.round(from + (to - from) * easeOut(progress));
+        setProgress(val);
+        if (progress < 1) requestAnimationFrame(step);
+        else resolve();
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  // Start on load
+  window.addEventListener('load', () => {
+    // Small initial delay so the page renders first
+    setTimeout(runSequence, 600);
+  });
+
+})();
+</script>
+</body>
+</html>

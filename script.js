@@ -3,13 +3,24 @@ document.addEventListener('DOMContentLoaded',()=>{
   /* DARK MODE TOGGLE — with sleek circular-reveal transition */
   const root = document.documentElement;
   const toggleBtn = document.getElementById('theme-toggle');
+  const navLogo = document.getElementById('nav-logo');
   const saved = localStorage.getItem('idcraft-theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   if (saved === 'dark' || (!saved && prefersDark)) root.setAttribute('data-theme', 'dark');
 
+  function swapLogo(theme) {
+    if (!navLogo) return;
+    navLogo.src = theme === 'dark' ? 'N5.png' : 'N4.png';
+    navLogo.alt = theme === 'dark' ? 'IDCraft Pro logo (light)' : 'IDCraft Pro logo';
+  }
+
+  // Apply logo on initial load
+  swapLogo(root.getAttribute('data-theme') || 'light');
+
   function applyTheme(next) {
     root.setAttribute('data-theme', next);
     localStorage.setItem('idcraft-theme', next);
+    swapLogo(next);
   }
 
   toggleBtn.addEventListener('click', (e) => {
