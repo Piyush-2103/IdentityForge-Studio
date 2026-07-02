@@ -1,7 +1,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --amber:#E8650A;--amber-dk:#C4520A;--amber-lt:#FFF0E6;--amber-md:rgba(232,101,10,.22);
-  --bg:#F0EDE8;--bg2:#E8E3DC;--ink:#1A1612;--ink2:#3D3630;--ink3:#6B6259;--star-empty:#D8D0C4;
+  --bg:#F0EDE8;--bg2:#E8E3DC;--ink:#1A1612;--ink2:#3D3630;--ink3:#524840;--star-empty:#D8D0C4;
   --white:#FFFFFF;--rule:rgba(26,22,18,.1);--success:#1A7A4A;
   --peach:#FFDED0;--sky:#D0E8FF;--mint:#CFFFEA;--lemon:#FFF6CC;--lilac:#EAD8FF;--rose:#FFD6E8;
   --body:'Nunito',sans-serif;--disp:'Bebas Neue',sans-serif;--mono:'IBM Plex Mono',monospace;

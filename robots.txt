@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://piyush-2103.github.io/IDCraft-Pro/sitemap.xml
+# Sitemaps
+Sitemap: https://piyush-2103.github.io/sitemap.xml
+
+# Block any accidental config or asset files
+Disallow: /*.json$
